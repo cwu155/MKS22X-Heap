@@ -2,71 +2,55 @@ import java.util.*;
 
 public class MyHeap{
   public static int[] test;
-  public static int max, min, temp, counter;
+  public static int min, temp, counter;
 
   public static void pushDown(int[]data,int size,int index){
-    //this code big lmao
-    if ((2*index) + 2 > size){ return; }
-    if (data[(2*index) + 1] > data[index] || data[(2*index) + 2] > data[index]){
 
-      if ((2*index) + 2 == size){
-        max = (2*index) + 1;
+    while (2*index + 1 <= size-1){
+      int max = 2*index + 1;
+
+      if (2*index + 2 <= size-1 && data[2*index + 2] > data[max]){
+        max = 2*index + 2;
+      }
+
+      if (data[index] < data[max]){
         temp = data[index];
         data[index] = data[max];
         data[max] = temp;
+        index = max;
+      } else {
         return;
       }
-
-      if (data[(2*index) + 1] > data[(2*index) + 2]){
-        max = (2*index) + 1;
-      } else {
-        max = (2*index) + 2;
-      }
-      temp = data[index];
-      data[index] = data[max];
-      data[max] = temp;
-    }
-  }
-
-  public static void pushUp(int[]data,int index){
-    if (2*index + 2 > data.length){return;}
-    if (data[2*index + 1] < data[index] || data[2*index + 2] < data[index]){
-      if (data[2*index + 1] < data[2*index + 2]){
-        min = 2*index + 1;
-      } else {
-        min = 2*index+2;
-      }
-      temp = data[index];
-      data[index] = data[min];
-      data[min] = temp;
     }
   }
 
   public static void heapify(int[] data){
-    for (int i = 0; i < data.length; i++){
-      //pushDown(data, data.length, i);
-      pushUp(data, i);
-    }
-  }
-
-  public static void heapsort(int[] data){
-    heapify(data);
-    for (int i : data){System.out.println(i);}
-    System.out.println("---------------");
-
-    counter = data.length-1;
-    for (int i = 0; i < 2; i++){
-      temp = data[counter];
-      data[counter] = data[0];
-      data[0] = temp;
-      pushDown(data, counter+1, 0);
+    int counter = (data.length-2)/2;
+    while (counter >= 0){
+      pushDown(data, data.length, counter);
       counter -= 1;
     }
   }
 
+  // public static void heapsort(int[] data){
+  //   heapify(data);
+  //
+  // 	int counter = data.length - 1;
+  //   	while(end > 0){
+  //   		int temp = data[end];
+  //   		data[end] = data[0];
+  //   		data[0] = temp;
+  //   		pushDown(data, data.length, end - 1);
+  //   		end--;
+  // 	}
+  // }
+
   public static void main(String[] args) {
-     int[] test = {5, 8, 16, 12, 7, 0, 4};
+     //int[] test = {10, 3, 7, 6, 1, 4, 2, 5, 6, 22, 2, 3, 111, 44, 27};
+     int[] test = {22, 33, 79, 4, 44};
+     //int[] test = {49,	38,	44,	25,	42,	23,	18};
      heapify(test);
+     //heapsort(test);
      for (int i : test){System.out.println(i);}
   }
 }
